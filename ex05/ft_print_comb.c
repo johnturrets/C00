@@ -1,5 +1,4 @@
 #include <unistd.h>
-#include <stdio.h>
 
 void ft_putchar (char c) {
   write(1, &c, 1);
@@ -13,8 +12,7 @@ void ft_putchars (char f, char s, char t) {
   ft_putchar(' ');
 }
 
-
-int main (int argc, char *argv[]) {
+void ft_print_comb(void) {
   int f, s, t;
   f = '0';
   s = '1';
@@ -31,6 +29,4 @@ int main (int argc, char *argv[]) {
     s = ++f + 1;
     t = s + 1;
   }
-
-  return 0;
 }
