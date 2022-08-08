@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_print_combn.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: joao-rod <joao-rod@student.42lisboa.com>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/08/08 09:20:33 by joao-rod          #+#    #+#             */
+/*   Updated: 2022/08/08 11:02:13 by joao-rod         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 #include <unistd.h>
 
 void ft_putchar(char c)
@@ -18,7 +29,19 @@ void ft_putchar_array(char arr[], int size)
 }
 
 
-void sequence(char *arr, int size)
+void gen_sequence(char *arr, int index,	int size)
+{// gen sequence starting by incrementing arr[index]
+	int start = arr[index];
+	start++;
+	while (index < size)
+	{
+		arr[index++] = start;
+		start++;
+	}
+}
+
+
+void initial_sequence(char *arr, int size)
 { 
   int i = 0;
   while (i < size)
@@ -29,45 +52,56 @@ void sequence(char *arr, int size)
 }
 
 
-void ft_print_combn(int n) {
-  int i;
-  char digits[n]; 
-  sequence(digits, n); 
-  
-  char first = '0';
-  char last = sequence[n - 1]; // last char of last digit before
-                                 // incrementing digit before
-  char top = '9'; // top of current index, last - 1
-  char max = '9' - n - 1;
+void combn(char *arr, int index, int size)
+{// increment at index
+	ft_putchar_array(arr, size);
 
-  i = n - 1;
-  
+	if (arr[size - 1] < '9')
+	{
+		arr[size - 1]++;
+		combn(arr, index, size);
+	}
+	else
+	{
+		if(arr[0] == '9' - size + 1)
+	   	{
+			return;
+		}
+		index = size - 2 ;
+		while (arr[index] == arr[index + 1] - 1)
+		{
+			--index;
+		}
+		gen_sequence(arr, index, size);
+		combn(arr, index, size);
+	}
+	
 
-  while (digits[0] <= max)
-  { // start loop at last digit, iterate till hits 9
-    // then increment digit before
-    // then do the same but starting from 1 digit upper than before
-    while (digits[i] <= top) { 
-      digits[i]++;
-      
-      ft_putchar_array(digits, n);
-      if (digits[i] == top)
-      {
-        digits[i - 1]++;
-        last++;
-        digits[i] = last
-      }
-    }
-    first++;
-    sequence(digits, n);
-    digits[0] = first;
-    top = '9';
-    i = n - 1;
-  }
 }
 
+
+void ft_print_combn(int n) {
+	int i;
+	char digits[n]; 
+	initial_sequence(digits, n); 
+	combn(digits, n - 2, n);
+}
+	
+
+   
+
+  
 int main(void)
 {
-  ft_print_combn(5);
+  ft_print_combn(1);
+
+  ft_putchar('\n');
+  ft_print_combn(3);
+  ft_putchar('\n');
+
+  ft_print_combn(7);
+  
+  ft_putchar('\n');
+  ft_print_combn(9);
   return 0;
 }
